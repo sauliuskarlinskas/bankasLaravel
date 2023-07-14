@@ -6,27 +6,28 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Clients list</h5>
+                        <h5 class="card-title">Accounts list</h5>
                         <ul class="list-group list-group-flush">
-                            @forelse($clients as $client)
+                            @forelse($accounts as $account)
                                 <li class="list-group-item">
                                     <div class="d-flex justify-content-between">
                                         <div>
                                             <div class="d-flex">
                                                 <div class="ms-2">
-                                                    <div>{{ $client->client }}</div>
-                                                    <div>{{ $client->name }}</div>
-                                                    <div>{{ $client->last_name }}</div>
-                                                    <div>{{ $client->personal_id }}</div>
+                                                    <div>{{ $account->client->name }}</div>
+                                                    <div>{{ $account->client->last_name }}</div>
+                                                    <div>{{ $account->client->personal_id }}</div>
+                                                    <div>{{ $account->iban }}</div>
+                                                    <div>{{ $account->balance }}</div>
 
                                                 </div>
                                             </div>
                                         </div>
                                         <div>
-                                            <a class="btn btn-success" href="{{ route('clients-edit', $client) }}">
+                                            <a class="btn btn-success">
                                                 Edit
                                             </a>
-                                            <a class="btn btn-danger" href="{{ route('clients-delete', $client) }}">
+                                            <a class="btn btn-danger" href="{{ route('accounts-delete', $account) }}">
                                                 Delete
                                             </a>
 
@@ -35,7 +36,7 @@
                                 </li>
                             @empty
                                 <li class="list-group-item">
-                                    <p class="text-center">No clients</p>
+                                    <p class="text-center">No accounts</p>
                                 </li>
                             @endforelse
                         </ul>

@@ -83,10 +83,10 @@
 
                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
 
-                                <a class="dropdown-item">
+                                <a class="dropdown-item" href="{{ route('clients-index') }}">
                                     Clients List
                                 </a>
-                                <a class="dropdown-item">
+                                <a class="dropdown-item" href="{{ route('clients-create') }}">
                                     Add Client
                                 </a>
 
@@ -104,7 +104,7 @@
                                 <a class="dropdown-item">
                                     Accounts List
                                 </a>
-                                <a class="dropdown-item">
+                                <a class="dropdown-item" href="{{ route('accounts-create') }}">
                                     Create Account
                                 </a>
 
@@ -118,6 +118,8 @@
         </nav>
 
         <main class="py-4">
+            @include('msg.message')
+            @include('msg.error')
             @yield('content')
         </main>
     </div>
