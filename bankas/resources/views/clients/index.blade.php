@@ -15,9 +15,9 @@
                                             <div class="d-flex">
                                                 <div class="ms-2">
                                                     <div>{{ $client->client }}</div>
-                                                    <div>{{ $client->name }}</div>
-                                                    <div>{{ $client->last_name }}</div>
-                                                    <div>{{ $client->personal_id }}</div>
+                                                    <div>Name: {{ $client->name }}</div>
+                                                    <div>Last name: {{ $client->last_name }}</div>
+                                                    <div>Personal id: {{ $client->personal_id }}</div>
 
                                                 </div>
                                             </div>

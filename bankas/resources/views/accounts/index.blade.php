@@ -17,7 +17,7 @@
                                                     <div>Name: {{ $account->client->name }}</div>
                                                     <div>Last name: {{ $account->client->last_name }}</div>
                                                     <div>Personal id: {{ $account->client->personal_id }}</div>
-                                                    <div>Account number: {{ $account->iban }}</div>
+                                                    <div>Account number: LT {{ $account->iban }}</div>
                                                     <div>Balance: {{ $account->balance }} €</div>
 
                                                 </div>
