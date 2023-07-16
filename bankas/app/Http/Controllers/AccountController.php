@@ -41,8 +41,28 @@ class AccountController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-               
+                // 'iban' => 'required|unique:accounts|size:20',
+               'client_id' => 'required|integer'
             ],
+            [
+                // 'iban.required' => 'Please enter account No!',
+                'client_id.required' => 'Please select client!'
+            ]
+        );
+
+        if ($validator->fails()) {
+            $request->flash();
+            return redirect()->back()->withErrors($validator);
+        }
+
+        $account = new Account;
+        $account->client_id = $request->client_id;
+        $account->iban = rand(10000000000,99999999999);
+        $account->balance = 0;
+        $account->save();
+        return redirect()
+        ->route('accounts-index')
+        ->with('success', 'New account has been created!');
     }
 
     /**
@@ -58,7 +78,12 @@ class AccountController extends Controller
      */
     public function edit(Account $account)
     {
-        //
+        $clients = Client::all();
+
+        return view('accounts.edit', [
+            'account' => $account,
+            'clients' => $clients
+        ]);
     }
 
     /**
@@ -66,14 +91,70 @@ class AccountController extends Controller
      */
     public function update(Request $request, Account $account)
     {
-        //
+        $amount = $request->amount;
+
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'amount' => 'required|integer|min:0'
+            ],
+            [
+                'amount.required' => 'Please enter the amount!',
+                'amount.integer' => 'The amount has to be integer!',
+                'amount.min' => 'The amount must be a positive integer!'
+            ]
+        );
+
+        if ($validator->fails()) {
+            $request->flash();
+            return redirect()->back()->withErrors($validator);
+        }
+
+        // Add money
+        if (isset($request->add)) {
+
+            $account->balance += $amount;
+
+            $account->save();
+            return redirect()
+                ->route('accounts-index')
+                ->with('success', $amount . ' € has been added to the ' . $account->client->name . ' ' . $account->client->last_name . ' account ' . $account->iban . '!');
+        }
+
+        // Withdraw money
+        if (isset($request->withdraw)) {
+
+            if ($account->balance < $amount) {
+                return redirect()
+                ->back()
+                ->with('warning',  'You have only ' . $account->balance. '€. You cannot withdrawn ' . $amount. '€');
+            }
+
+            $account->balance -= $amount;
+
+            $account->save();
+            return redirect()
+                ->route('accounts-index')
+                ->with('success', $amount . ' € has been withdrawn from the ' . $account->client->name . ' ' . $account->client->last_name . ' account ' . $account->iban . '!');
+        }
     }
 
+
+    public function delete(Account $account)
+    {
+        
+        return view('accounts.delete', [
+            'account' => $account
+        ]);
+    }
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Account $account)
     {
-        //
+        $account->delete();
+        return redirect()
+            ->route('accounts-index')
+            ->with('success', 'Account has been deleted!');
     }
 }

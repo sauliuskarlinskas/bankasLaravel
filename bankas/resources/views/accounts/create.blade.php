@@ -10,17 +10,19 @@
                         <form method="post" action="{{ route('accounts-store') }}">
                             <div class="mb-3">
                                 <div class="mb-3">
-                                    <label class="form-label">Client</label>
                                     <select name="client_id" class="form-select">
-                                        <option>Open this select menu</option>
+                                        <option>Select client</option>
                                         @foreach ($clients as $client)
                                             <option value="{{ $client->id }}"
-                                                @if ($client->id == old('client_id')) selected @endif>{{ $client->name }}
+                                                @if ($client->id == old('client_id')) selected @endif>{{ $client->name }} {{ $client->last_name }}
                                             </option>
                                         @endforeach
                                     </select>
                                 </div>
+                               
+                                
                                 <button type="submit" class="btn btn-primary">Create</button>
+                                <a class="btn btn-secondary m-1" href="{{route('accounts-index')}}">Cancel</a>
                                 @csrf
                         </form>
                     </div>

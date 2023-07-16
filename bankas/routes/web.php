@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\ClientController as Ck;
 use App\Http\Controllers\AccountController as Ac;
 
@@ -36,7 +37,7 @@ Route::prefix('accounts')->name('accounts-')->group(function () {
 
     Route::get('/', [Ac::class, 'index'])->name('index');
     Route::get('/create', [Ac::class, 'create'])->name('create');
-    Route::post('/', [Ck::class, 'store'])->name('store');
+    Route::post('/', [Ac::class, 'store'])->name('store');
     Route::get('/delete/{account}', [Ac::class, 'delete'])->name('delete');
     Route::delete('/{account}', [Ac::class, 'destroy'])->name('destroy');
     Route::get('/edit/{account}', [Ac::class, 'edit'])->name('edit');

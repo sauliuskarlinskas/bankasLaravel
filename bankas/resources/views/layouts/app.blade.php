@@ -101,7 +101,7 @@
 
                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
 
-                                <a class="dropdown-item">
+                                <a class="dropdown-item" href="{{ route('accounts-index') }}">
                                     Accounts List
                                 </a>
                                 <a class="dropdown-item" href="{{ route('accounts-create') }}">

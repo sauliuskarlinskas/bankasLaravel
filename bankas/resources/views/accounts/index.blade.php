@@ -14,18 +14,18 @@
                                         <div>
                                             <div class="d-flex">
                                                 <div class="ms-2">
-                                                    <div>{{ $account->client->name }}</div>
-                                                    <div>{{ $account->client->last_name }}</div>
-                                                    <div>{{ $account->client->personal_id }}</div>
-                                                    <div>{{ $account->iban }}</div>
-                                                    <div>{{ $account->balance }}</div>
+                                                    <div>Name: {{ $account->client->name }}</div>
+                                                    <div>Last name: {{ $account->client->last_name }}</div>
+                                                    <div>Personal id: {{ $account->client->personal_id }}</div>
+                                                    <div>Account number: {{ $account->iban }}</div>
+                                                    <div>Balance: {{ $account->balance }} €</div>
 
                                                 </div>
                                             </div>
                                         </div>
                                         <div>
-                                            <a class="btn btn-success">
-                                                Edit
+                                            <a class="btn btn-success" href="{{ route('accounts-edit', $account) }}">
+                                                Edit balance
                                             </a>
                                             <a class="btn btn-danger" href="{{ route('accounts-delete', $account) }}">
                                                 Delete
