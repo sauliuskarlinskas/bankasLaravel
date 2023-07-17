@@ -20,6 +20,10 @@
                                     </select>
                                 </div>
                                
+                                <div class="mb-3">
+                                    <label class="form-label">Iban</label>
+                                    <input name="iban" type="text" class="form-control" value="{{$iban}}" readonly>
+                                </div>
                                 
                                 <button type="submit" class="btn btn-primary">Create</button>
                                 <a class="btn btn-secondary m-1" href="{{route('accounts-index')}}">Cancel</a>

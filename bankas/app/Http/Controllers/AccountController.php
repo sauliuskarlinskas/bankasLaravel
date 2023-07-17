@@ -10,6 +10,10 @@ use Illuminate\Support\Facades\Validator;
 
 class AccountController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      */
@@ -28,9 +32,11 @@ class AccountController extends Controller
     public function create()
     {
         $clients = Client::all();
+        $iban = Account::generateLithuanianIBAN();
     
         return view('accounts.create', [
-            'clients' => $clients
+            'clients' => $clients,
+            'iban' => $iban
         ]);
     }
 
@@ -42,11 +48,11 @@ class AccountController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                // 'iban' => 'required|unique:accounts|size:20',
+                 'iban' => 'required|unique:accounts|size:20',
                'client_id' => 'required|integer'
             ],
             [
-                // 'iban.required' => 'Please enter account No!',
+                'iban.required' => 'Please enter account No!',
                 'client_id.required' => 'Please select client!'
             ]
         );
@@ -58,7 +64,7 @@ class AccountController extends Controller
 
         $account = new Account;
         $account->client_id = $request->client_id;
-        $account->iban = rand(10000000000,99999999999);
+        $account->iban = $request->iban;
         $account->balance = 0;
         $account->save();
         return redirect()
