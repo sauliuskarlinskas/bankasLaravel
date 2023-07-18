@@ -76,10 +76,7 @@
                     <div class="container">
                         <a href="{{ url('/home') }}">Home</a>
                     </div>
-                    <div class="container">
-                        <a href="{{ url('/catalog') }}">Catalog of clients and accounts</a>
-                    </div>
-
+                   
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
 
@@ -114,6 +111,12 @@
                                 </a>
                                 <a class="dropdown-item" href="{{ route('accounts-create') }}">
                                     Create Account
+                                </a>
+
+                                <a class="dropdown-item"
+                                 href="{{ route('accounts-transfare') }}"
+                                 >
+                                    Transfare to another clients account
                                 </a>
 
                             </div>

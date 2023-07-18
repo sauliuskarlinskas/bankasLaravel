@@ -15,12 +15,19 @@ class ClientController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $clients = Client::all();
+       
+
+        $perPage = (int) 5;
+
+        $clients = Client::select('clients.*');
+        $clients = $clients->paginate($perPage)->withQueryString();
+        
 
         return view('clients.index', [
-            'clients' => $clients
+            'clients' => $clients,
+            'perPage' => $perPage
         ]);
     }
 

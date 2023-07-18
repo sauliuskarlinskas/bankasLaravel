@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-4">
             <div class="card">
-            <h2 class="card-header">Edit account balance</h2>
+            <h2 style="color: #ef4444" class="card-header">Edit account balance</h2>
                 <div class="card-body">
                         <form method="post" action="{{route('accounts-update', $account)}}">
                             <div class="justify-content-between">

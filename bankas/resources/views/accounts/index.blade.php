@@ -6,7 +6,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Accounts list</h5>
+                        <h5 style="color: #ef4444" class="card-title">Accounts list</h5>
                         <ul class="list-group list-group-flush">
                             @forelse($accounts as $account)
                                 <li class="list-group-item">
@@ -14,7 +14,7 @@
                                         <div>
                                             <div class="d-flex">
                                                 <div class="ms-2">
-                                                    <div>Name: {{ $account->client->name }}</div>
+                                                    <div >Name: {{ $account->client->name }}</div>
                                                     <div>Last name: {{ $account->client->last_name }}</div>
                                                     <div>Personal id: {{ $account->client->personal_id }}</div>
                                                     <div>Account number: LT {{ $account->iban }}</div>
@@ -43,6 +43,9 @@
 
                     </div>
                 </div>
+            </div>
+            <div class="col-md-12 mt-4">
+                {{ $accounts->links() }}
             </div>
         </div>
     </div>

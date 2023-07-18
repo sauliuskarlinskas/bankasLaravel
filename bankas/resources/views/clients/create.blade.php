@@ -6,7 +6,7 @@
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Add new client</h5>
+                        <h5 style="color: #ef4444" class="card-title">Add new client</h5>
                         <form method="post" action="{{ route('clients-store') }}">
                             <div class="mb-3">
                                 <label class="form-label">Name</label>

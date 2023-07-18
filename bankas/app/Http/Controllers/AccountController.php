@@ -17,13 +17,18 @@ class AccountController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $accounts = Account::all();
+
+        $perPage = (int) 5;
+
+        $accounts = Account::select('accounts.*');
+        $accounts = $accounts->paginate($perPage)->withQueryString();
 
         return view('accounts.index', [
-            'accounts' => $accounts
-        ]);   
+            'accounts' => $accounts,
+            'perPage' => $perPage
+        ]);
     }
 
     /**
@@ -33,7 +38,7 @@ class AccountController extends Controller
     {
         $clients = Client::all();
         $iban = Account::generateLithuanianIBAN();
-    
+
         return view('accounts.create', [
             'clients' => $clients,
             'iban' => $iban
@@ -48,8 +53,8 @@ class AccountController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                 'iban' => 'required|unique:accounts|size:20',
-               'client_id' => 'required|integer'
+                'iban' => 'required|unique:accounts|size:20',
+                'client_id' => 'required|integer'
             ],
             [
                 'iban.required' => 'Please enter account No!',
@@ -68,8 +73,8 @@ class AccountController extends Controller
         $account->balance = 0;
         $account->save();
         return redirect()
-        ->route('accounts-index')
-        ->with('success', 'New account has been created!');
+            ->route('accounts-index')
+            ->with('success', 'New account has been created!');
     }
 
     /**
@@ -133,8 +138,8 @@ class AccountController extends Controller
 
             if ($account->balance < $amount) {
                 return redirect()
-                ->back()
-                ->with('warning',  'You have only ' . $account->balance. '€. You cannot withdrawn ' . $amount. '€');
+                    ->back()
+                    ->with('warning', 'You have only ' . $account->balance . '€. You cannot withdrawn ' . $amount . '€');
             }
 
             $account->balance -= $amount;
@@ -149,7 +154,7 @@ class AccountController extends Controller
 
     public function delete(Account $account)
     {
-        
+
         return view('accounts.delete', [
             'account' => $account
         ]);
@@ -164,4 +169,52 @@ class AccountController extends Controller
             ->route('accounts-index')
             ->with('success', 'Account has been deleted!');
     }
+
+
+    public function transfare(Account $account, )
+    {
+        $accounts = Account::all();
+
+        return view(
+            'accounts.transfare',
+            [
+                'accounts' => $accounts
+            ]
+        );
+    }
+
+
+    public function execute(Account $account, Account $account2, Request $request)
+    {
+
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'amount' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+            ],
+            [
+                'amount.required' => '??',
+                'amount.regex' => 'Check amount'
+            ]
+        );
+
+        if ($validator->fails()) {
+            $request->flash();
+            return redirect()->back()->withErrors($validator);
+        }
+
+        if ($account->balance >= $request->amount) {
+            $account->balance -= $request->amount;
+            $account2->balance += $request->amount;
+            $account->save();
+            $account2->save();
+            return redirect()->back()->with('success', 'Funds where transfared!');
+        }
+        return redirect()->back()->withErrors('Balance is not sufficient');
+    }
+
+
+
+
+
 }

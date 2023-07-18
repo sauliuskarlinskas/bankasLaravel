@@ -6,7 +6,7 @@
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Create new account</h5>
+                        <h5 style="color: #ef4444" class="card-title">Create new account</h5>
                         <form method="post" action="{{ route('accounts-store') }}">
                             <div class="mb-3">
                                 <div class="mb-3">

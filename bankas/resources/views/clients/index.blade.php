@@ -6,7 +6,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Clients list</h5>
+                        <h5 style="color: #ef4444" class="card-title">Clients list</h5>
                         <ul class="list-group list-group-flush">
                             @forelse($clients as $client)
                                 <li class="list-group-item">
@@ -42,6 +42,9 @@
 
                     </div>
                 </div>
+            </div>
+            <div class="col-md-12 mt-4">
+                {{ $clients->links() }}
             </div>
         </div>
     </div>
