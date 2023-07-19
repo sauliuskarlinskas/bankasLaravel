@@ -45,9 +45,10 @@ Route::prefix('accounts')->name('accounts-')->group(function () {
 
 
     Route::get('/transfare', [Ac::class, 'transfare'])->name('transfare');
-    // Route::get('/transfare/{account}/{account2}', [Ac::class, 'transfare'])->name('transfare');
-    // Route::post('/transfare/{account}/{account2}', [Ac::class, 'execute'])->name('execute');
+    
 });
+
+Route::post('/execute', [Ac::class, 'execute'])->name('execute');
 
 Auth::routes();
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Client;
+use App\Models\Account;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -17,18 +18,43 @@ class ClientController extends Controller
      */
     public function index(Request $request)
     {
-       
-
+        
+        $sortBy = $request->sort_by ?? '';
+        $orderBy = $request->order_by ?? '';
+        if ($orderBy && !in_array($orderBy, ['asc', 'desc'])) {
+            $orderBy = '';
+        }
+        
+        
         $perPage = (int) 5;
 
-        $clients = Client::select('clients.*');
-        $clients = $clients->paginate($perPage)->withQueryString();
-        
+        if ($request->s) {
+
+            $clients = Client::where('client', 'like', '%'.$request->s.'%')->paginate(5)->withQueryString();
+
+        } else {
+
+            $clients = Client::select('clients.*');
+
+            
+            $clients = match($sortBy) {
+                'client' => $clients->orderBy('client', $orderBy),
+                'last_name' => $clients->orderBy('last_name', $orderBy),
+                'name' => $clients->orderBy('name', $orderBy),              
+                default => $clients
+            };
+
+            $clients = $clients->paginate($perPage)->withQueryString();
+        }
 
         return view('clients.index', [
             'clients' => $clients,
-            'perPage' => $perPage
+            'sortBy' => $sortBy,
+            'orderBy' => $orderBy,
+            'perPage' => $perPage,
         ]);
+
+       
     }
 
     /**
@@ -146,9 +172,9 @@ class ClientController extends Controller
 
     public function delete(Client $client)
     {
-        // if ($client->clients()->count()) {
-        //     return redirect()->back()->with('info', 'Can not delete client, because it has acounts!');
-        // }
+        if ($client->accounts()->count()) {
+            return redirect()->back()->with('info', 'Can not delete ' . $client->name . ' ' . $client->last_name . ', because it has accounts!');
+        }
 
         return view('clients.delete', [
             'client' => $client
@@ -163,6 +189,6 @@ class ClientController extends Controller
         $client->delete();
         return redirect()
             ->route('clients-index')
-            ->with('success', 'Client has been deleted!');
+            ->with('success',   $client->name . ' ' . $client->last_name . ' has been deleted!');
     }
 }

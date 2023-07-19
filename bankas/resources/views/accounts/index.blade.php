@@ -6,7 +6,9 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        <h5 style="color: #ef4444" class="card-title">Accounts list</h5>
+                        <div class="card-header">
+                        <h4 style="color: #ef4444; font-weight:bold" class="card-title">Accounts list</h4>
+                        </div>
                         <ul class="list-group list-group-flush">
                             @forelse($accounts as $account)
                                 <li class="list-group-item">

@@ -9,24 +9,29 @@
                         <h5 style="color: #ef4444" class="card-title">Funds transfare</h5>
 
                         <div class="container m-3">
-                            <form >
-                                {{-- class='col-4' action="{{route('account-execute', ['account'=>$account, 'account2'=>$account2])}}" method="post" --}}
+                            <form method="post" action="{{ route('execute') }}">
                                 <div>
                                     <label class="mr-3">Transfare from</label>
-                                    <select>
+                                    <select name="from_account_id" class="form-select">
+                                        <option>Select client and account</option>
                                         @foreach ($accounts as $account)
-                                            <option value="{{ $account->id }}">{{ $account->client->name }}
+                                            <option value="{{ $account->id }}"
+                                                @if ($account->id == old('account_id')) selected @endif>
+                                                {{ $account->client->name }}
                                                 {{ $account->client->last_name }} {{ $account->iban }}
                                                 {{ $account->balance }}€</option>
                                         @endforeach
                                     </select>
 
                                     <label class="mr-3" for="fname">Transfare to</label>
-                                    <select>
-                                        @foreach ($accounts as $account2)
-                                            <option value="{{ $account2->id }}">{{ $account2->client->name }}
-                                                {{ $account2->client->last_name }} {{ $account2->iban }}
-                                                {{ $account2->balance }}€</option>
+                                    <select name="to_account_id" class="form-select">
+                                        <option>Select client and account</option>
+                                        @foreach ($accounts as $account)
+                                            <option value="{{ $account->id }}"
+                                                @if ($account->id == old('account_id')) selected @endif>
+                                                {{ $account->client->name }}
+                                                {{ $account->client->last_name }} {{ $account->iban }}
+                                                {{ $account->balance }}€</option>
                                         @endforeach
                                     </select>
 

@@ -174,7 +174,6 @@ class AccountController extends Controller
     public function transfare(Account $account, )
     {
         $accounts = Account::all();
-
         return view(
             'accounts.transfare',
             [
@@ -184,37 +183,45 @@ class AccountController extends Controller
     }
 
 
-    public function execute(Account $account, Account $account2, Request $request)
+    public function execute(Account $account, Request $request)
     {
+        $amount = $request->amount;
 
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'amount' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+            $validator = Validator::make(
+            $request->all(),[
+                'amount' => ['required', 'min:0', 'not_in:0', 'regex:/^0$|^[1-9]\d*$|^\.\d+$|^0\.\d*$|^[1-9]\d*\.\d*$/']
             ],
             [
-                'amount.required' => '??',
-                'amount.regex' => 'Check amount'
-            ]
-        );
+                'amount.required' => 'Please enter the amount!',
+                'amount.min', 'amount.not_in' => 'The amount must be a positive digit!'
+            ]);
 
-        if ($validator->fails()) {
-            $request->flash();
-            return redirect()->back()->withErrors($validator);
-        }
+            if ($validator->fails()) {
+                $request->flash();
+                return redirect()->back()->withErrors($validator);
+            }
 
-        if ($account->balance >= $request->amount) {
-            $account->balance -= $request->amount;
-            $account2->balance += $request->amount;
-            $account->save();
-            $account2->save();
-            return redirect()->back()->with('success', 'Funds where transfared!');
-        }
-        return redirect()->back()->withErrors('Balance is not sufficient');
+            
+
+            $account = Account::find($request->from_account_id);
+            $account2 = Account::find($request->to_account_id);
+
+           if ($account ->iban == $account2 ->iban) {
+            return redirect()->back()->withErrors('Chose two diferent accounts!');
+           }
+
+
+            if ($account->balance >= $request->amount ){
+                $account->balance -= $request->amount;
+                $account2->balance += $request->amount;
+
+                $account->save();
+                $account2->save();
+                return redirect()->back()->with('success', $amount . ' € from ' . $account->client->name . ' ' . $account->client->last_name . ' account ' . $account->iban . ' has been transfared to ' . $account2->client->name . ' ' . $account2->client->last_name . ' account ' . $account2->iban . '!');
+            }
+
+            return redirect()->back()->withErrors('Balance of ' . $account->client->name . ' ' . $account->client->last_name . ' account ' . $account->iban . ' is too little!');
     }
-
-
-
 
 
 }
